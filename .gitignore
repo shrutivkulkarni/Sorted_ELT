@@ -1,2 +1,3 @@
 senv/
 __pycache__/
+.env
