@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 load_dotenv(dotenv_path="./.env") #current directory's .env file
 
 API_KEY = os.getenv("API_KEY")
-CHANNEL_HANDLE = "SortedFood"
+CHANNEL_HANDLE = os.getenv("CHANNEL_HANDLE")
+
 maxResults = 50 #as per youtube's api guide
 
 
@@ -81,7 +82,7 @@ def get_video_ids(playlist_id):
         raise e
 
 
-""" this is super helpful to process the requet to the API in chunks because we have 2694 videos and 
+""" this is super helpful to process the request to the API in chunks because we have 2694 videos and 
 iterating each video one by one will just cause our request and error out after reaching the established quota by YT API guideline, these are reasons for batching the request
 """
 # def batch_size_helper(videoid_list, batch_size):

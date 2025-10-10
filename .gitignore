@@ -1,4 +1,5 @@
 senv/
+venv/
 __pycache__/
 .env
 video_stats.json
