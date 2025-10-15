@@ -2,19 +2,25 @@ import requests
 import json
 from datetime import date
 
-import os
-from dotenv import load_dotenv
+# import os
+# from dotenv import load_dotenv 
+# load_dotenv(dotenv_path="./.env")
+# API_KEY = os.getenv("API_KEY")
+# CHANNEL_HANDLE = os.getenv("CHANNEL_HANDLE")
 
 
-load_dotenv(dotenv_path="./.env") #current directory's .env file
+from airflow.decorators import task
+from airflow.models import Variable
 
-API_KEY = os.getenv("API_KEY")
-CHANNEL_HANDLE = os.getenv("CHANNEL_HANDLE")
+
+API_KEY = Variable.get("API_KEY")
+CHANNEL_HANDLE = Variable.get("CHANNEL_HANDLE")
 
 maxResults = 50 #as per youtube's api guide
 
 
 #from the channel handle, get the channel's unique identifier for videos
+@task
 def get_playlist_id():
     try:
 
@@ -46,6 +52,7 @@ def get_playlist_id():
 # playlist_id = get_playlist_id()
 
 #from the channel's unique identifier for video, get list and count of all the uploaded videos
+@task
 def get_video_ids(playlist_id):
 
     video_ids = []
@@ -90,7 +97,7 @@ iterating each video one by one will just cause our request and error out after 
 #         yield videoid_list[videoid: videoid + batch_size]
 
 
-
+@task
 def extract_video_details(video_ids):
     extracted_details = []
 
@@ -135,6 +142,7 @@ def extract_video_details(video_ids):
     except requests.exceptions.RequestException as e:
         raise e
 
+@task
 def save_dict_to_json(extracted_details):
     file_path = f"./data/SORTED_YT_data_{date.today()}.json"
 
