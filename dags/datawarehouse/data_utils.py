@@ -1,7 +1,7 @@
 from airflow.providers.postgres.hooks.postgres import PostgresHook
-from pyscopg2.extras import RealDictCursor
+from psycopg2.extras import RealDictCursor
 
-table = "yt_api"
+table = "sorted_api"
 
 
 def get_conn_cursor():
@@ -9,7 +9,7 @@ def get_conn_cursor():
     hook = PostgresHook(postgres_conn_id="postgres_db_yt_elt", database="elt_db") 
     conn = hook.get_conn() 
     #outputs data from the SQL query as a Python dict and not a default tuple
-    cur = conn.cursor(cursorfor_factory=RealDictCursor) 
+    cur = conn.cursor(cursor_factory=RealDictCursor) 
     return conn, cur
 
 def close_conn_cursor(conn, cur):
@@ -63,11 +63,19 @@ def create_table(schema):
     close_conn_cursor(conn,cur)
 
 def get_video_ids(cur, schema):
-    cur.execute(f""" SELECT video_ID FROM {schema}.{table};""")
+    cur.execute(f""" SELECT "video_ID" FROM {schema}.{table};""")
     ids = cur.fetchall()
 
     video_ids = [row['video_ID'] for row in ids]
     # cur.close()
 
     return video_ids
+
+# def main():
+#     print("Getting playlistid for the handle..")
+#     video_ids = get_playlist_id(cur, schema)
+#     print(f"Returned video_ids:{video_ids}")
+
+# if __name__ == "__main__":
+#     main()
         

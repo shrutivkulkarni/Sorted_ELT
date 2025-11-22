@@ -21,21 +21,23 @@ def staging_table():
 
         Sorted_data = load_data()
 
+
         create_schema(schema)
         create_table(schema)
 
         table_ids = get_video_ids(cur, schema)
+        print(f"This is table_ids:{table_ids}")
 
         for row in Sorted_data:
             if len(table_ids) == 0: #first ever insert only
                 insert_rows(cur, conn, schema, row)
             else:
-                if row['video_ID'] in table_ids: #update existing video_id for newer commentcount or viewcount or likecount
+                if row['video_id'] in table_ids: #update existing video_id for newer commentcount or viewcount or likecount
                     update_rows(cur, conn, schema, row)
                 else: 
                     insert_rows(cur, conn, schema, row)
                 
-        ids_in_json = {row['video_ID'] for row in Sorted_data}
+        ids_in_json = {row['video_id'] for row in Sorted_data}
 
         ids_to_delete = set(table_ids) - ids_in_json
 

@@ -1,7 +1,7 @@
 import logging
 
 logger = logging.getLogger(__name__)
-table = "yt_api"
+table = "sorted_api"
 
 def insert_rows(cur, conn, schema, row):
     
@@ -19,8 +19,8 @@ def insert_rows(cur, conn, schema, row):
             video_id = 'video_ID'
 
             cur.execute(f""" 
-                INSERT INTO {schema}.{table} ("video_ID", "video_title", "upload_date", "duration", "video_views", "likes_count", "comments_count")
-                VALUES(%(video_ID)s, %(video_title)s, %(upload_date)s, %(duration)s, %(video_views)s, %(likes_count)s, %(comments_count)s);
+                INSERT INTO {schema}.{table} ("video_ID", "video_title", "upload_date", "duration", "video_type","video_views", "likes_count", "comments_count")
+                VALUES(%(video_ID)s, %(video_title)s, %(upload_date)s, %(duration)s, %(video_type)s,%(video_views)s, %(likes_count)s, %(comments_count)s);
             """, row
             )
         conn.commit()
@@ -28,7 +28,7 @@ def insert_rows(cur, conn, schema, row):
         logger.info(f"Inserted row for video_id: {row[video_id]}")
 
     except Exception as e:
-        logger.error(f"Error occurred in inserting row for video_id: {row[video_id]}")
+        logger.error(f"Error occurred in inserting row for video_ID: {row[video_id]}")
         raise e
 
 def update_rows(cur, conn, schema, row):
@@ -56,7 +56,7 @@ def update_rows(cur, conn, schema, row):
                     "video_views" = %({video_views})s,
                     "likes_count" = %({likes_count})s,
                     "comments_count" = %({comments_count})s 
-                WHERE "video_id" = %({video_id})s AND "upload_date" = %({upload_date})s;
+                WHERE "video_ID" = %({video_id})s AND "upload_date" = %({upload_date})s;
             """, row
             )
         
@@ -77,7 +77,7 @@ def delete_rows(cur, conn, schema, ids_to_delete):
 
         cur.execute(
             f"""DELETE FROM {schema}.{table} 
-                WHERE "video_id" IN {ids_to_delete};"""
+                WHERE "video_ID" IN {ids_to_delete};"""
         )
         conn.commit()
 

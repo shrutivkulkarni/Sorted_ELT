@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 def load_data():
-    file_path = f"./data/SORTED_YT_data_{date.today()}.json()"
+    file_path = f"./data/SORTED_YT_data_{date.today()}.json"
 
     try:
         logger.info(f" Processing file: SORTED_YT_data_{date.today()}")

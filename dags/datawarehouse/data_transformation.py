@@ -34,8 +34,22 @@ def transform_data(row):
     duration_td = parse_duration(row['duration'])  #we defined this row in data_utils.py
 
     row['duration'] = (datetime.min + duration_td).time()
+    # print(f"This is the duration: {duration_td.total_seconds()}")
 
     row['video_type'] = 'Shorts' if duration_td.total_seconds() <= 120 else 'Normal'
 
     return row
     
+# # Test row as dictionary
+# row = {
+#     'video_id': '2xUFk2eLRwc',
+#     'title': "Barry's new \"Moisturiser\" | Sorted Food",
+#     'publishedAt': '2025-11-21 17:00:04',
+#     'duration': 'PT0H1M47S',  # ISO 8601 style, since original string was 00:01:47
+#     'viewCount': 22577,
+#     'likeCount': 951,
+#     'commentCount': 25
+# }
+
+# transformed_row = transform_data(row)
+# print(transformed_row)
