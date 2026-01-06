@@ -1,11 +1,12 @@
 import json
-from datetime import date
+from datetime import date, timedelta
 import logging
 
 logger = logging.getLogger(__name__)
 
 def load_data():
-    file_path = f"./data/SORTED_YT_data_{date.today()}.json"
+    run_date = date.today() - timedelta(days=1)
+    file_path = f"./data/SORTED_YT_data_{run_date}.json"
 
     try:
         logger.info(f" Processing file: SORTED_YT_data_{date.today()}")
